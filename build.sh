@@ -59,6 +59,7 @@ OMR_OPENWRT=${OMR_OPENWRT:-default}
 OMR_OPENWRT_GIT=${OMR_OPENWRT_GIT:-https://github.com}
 OMR_FORCE_DSA=${OMR_FORCE_DSA:-0}
 
+OMR_LIBC=${OMR_LIBC:-musl}
 
 if [ "$OMR_KERNEL" = "5.4" ] && [ "$OMR_TARGET" = "rutx12" ]; then
 	OMR_TARGET_CONFIG="config-rutx"
@@ -349,6 +350,13 @@ elif [ "$SYSLOG" = "syslog-ng" ]; then
 elif [ "$SYSLOG" = "logd" ]; then
 	echo "CONFIG_DEFAULT_logd=y" >> "$OMR_TARGET/${OMR_KERNEL}/source/.config"
 	echo "CONFIG_PACKAGE_logd=y" >> "$OMR_TARGET/${OMR_KERNEL}/source/.config"
+fi
+
+if [ "$OMR_LIBC" = "glibc" ]; then
+	echo "CONFIG_LIBC_USE_GLIBC=y" >> "$OMR_TARGET/${OMR_KERNEL}/source/.config"
+	echo "# CONFIG_LIBC_MUSL is not set" >> "$OMR_TARGET/${OMR_KERNEL}/source/.config"
+	echo "CONFIG_USE_GLIBC=y" >> "$OMR_TARGET/${OMR_KERNEL}/source/.config"
+	echo 'CONFIG_LIBC="glibc"' >> "$OMR_TARGET/${OMR_KERNEL}/source/.config"
 fi
 
 if [ "$SHORTCUT_FE" = "yes" ]; then
