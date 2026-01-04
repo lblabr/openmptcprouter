@@ -110,11 +110,11 @@ if [ "$ONLY_PREPARE" != "yes" ]; then
 			_get_repo feeds/${OMR_KERNEL}/packages ${OMR_OPENWRT_GIT}/openwrt/packages "234806df39e38734ce5a3dfe0d94f8811cb57440"
 			_get_repo feeds/${OMR_KERNEL}/luci ${OMR_OPENWRT_GIT}/openwrt/luci "be769afc62310631509826e41863ec7a71e764a4"
 			_get_repo feeds/${OMR_KERNEL}/routing ${OMR_OPENWRT_GIT}/openwrt/routing "f2ee837d3714f86e9d636302e9f69612c71029cb"
-		elif [ "$OMR_KERNEL" = "6.12" ] || [ "$OMR_KERNEL" = "6.17" ]; then
-			_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/openwrt/openwrt "3570dee5f0409cc8bab6a95d716a76112106307e"
-			_get_repo feeds/${OMR_KERNEL}/packages ${OMR_OPENWRT_GIT}/openwrt/packages "1a466498ef925b4eee630dddb13848a061279949"
-			_get_repo feeds/${OMR_KERNEL}/luci ${OMR_OPENWRT_GIT}/openwrt/luci "12995312420bbe32d7327beac30e8b52243732b4"
-			_get_repo feeds/${OMR_KERNEL}/routing ${OMR_OPENWRT_GIT}/openwrt/routing "149ea45cc223597262415823bcdca3effc601bc2"
+		elif [ "$OMR_KERNEL" = "6.12" ] || [ "$OMR_KERNEL" = "6.18" ]; then
+			_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/openwrt/openwrt "5578eb69c2eb279fee6d9dc47a6d5d328bc33acd"
+			_get_repo feeds/${OMR_KERNEL}/packages ${OMR_OPENWRT_GIT}/openwrt/packages "6e8b8fef61fef9c02fc29c54a83b4c90d2c2ed28"
+			_get_repo feeds/${OMR_KERNEL}/luci ${OMR_OPENWRT_GIT}/openwrt/luci "c1c29d2ecd7f52d075488cf23f447206e39bb33d"
+			_get_repo feeds/${OMR_KERNEL}/routing ${OMR_OPENWRT_GIT}/openwrt/routing "c69a11d3099fe7454a917615be48519a55267a7d"
 		fi
 	elif [ "$OMR_OPENWRT" = "coolsnowwolfmix" ]; then
 		_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/coolsnowwolf/lede.git "master"
@@ -496,7 +496,7 @@ cd "$OMR_TARGET/${OMR_KERNEL}/source"
 #	echo "Done"
 #fi
 
-if [ "$OMR_KERNEL" != "6.6" ] && [ "$OMR_KERNEL" != "6.10" ] && [ "$OMR_KERNEL" != "6.11" ] && [ "$OMR_KERNEL" != "6.12" ] && [ "$OMR_KERNEL" != "6.17" ]; then
+if [ "$OMR_KERNEL" != "6.6" ] && [ "$OMR_KERNEL" != "6.10" ] && [ "$OMR_KERNEL" != "6.11" ] && [ "$OMR_KERNEL" != "6.12" ] && [ "$OMR_KERNEL" != "6.18" ]; then
 	echo "Checking if No check patch is set or not"
 	if ! patch -Rf -N -p1 -s --dry-run < ../../../patches/nocheck.patch; then
 		echo "apply..."
@@ -512,12 +512,14 @@ else
 	echo "Done"
 fi
 
-echo "Checking if Nanqinlang patch is set or not"
-if ! patch -Rf -N -p1 -s --dry-run < ../../../patches/nanqinlang.patch; then
-	echo "apply..."
-	patch -N -p1 -s < ../../../patches/nanqinlang.patch
+if [ "$OMR_KERNEL" != "6.18" ]; then
+	echo "Checking if Nanqinlang patch is set or not"
+	if ! patch -Rf -N -p1 -s --dry-run < ../../../patches/nanqinlang.patch; then
+		echo "apply..."
+		patch -N -p1 -s < ../../../patches/nanqinlang.patch
+	fi
+	echo "Done"
 fi
-echo "Done"
 
 echo "Checking if Meson patch is set or not"
 if [ "$OMR_KERNEL" = "5.4" ] && ! patch -Rf -N -p1 -s --dry-run < ../../../patches/meson.patch; then
@@ -927,12 +929,12 @@ if [ "$OMR_KERNEL" = "6.12" ]; then
 		NOT_SUPPORTED="1"
 	fi
 fi
-if [ "$OMR_KERNEL" = "6.17" ]; then
-	echo "Set to kernel 6.17 for x86 arch"
-	find target/linux/x86 -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.17%g' {} \;
-	find target/linux/x86 -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.17%g' {} \;
+if [ "$OMR_KERNEL" = "6.18" ]; then
+	echo "Set to kernel 6.18 for x86 arch"
+	find target/linux/x86 -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.18%g' {} \;
+	find target/linux/x86 -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.18%g' {} \;
 	echo "Done"
-	echo "Set to kernel 6.12 for mediatek"
+	echo "Set to kernel 6.18 for mediatek"
 	find target/linux/mediatek -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.12%g' {} \;
 	echo "Done"
 	echo "Set to kernel 6.12 for bcm27xx"
@@ -992,8 +994,8 @@ if [ "$OMR_KERNEL" = "6.17" ]; then
 	#rm -f target/linux/generic/pending-6.12/454-nvmem-implement-block-NVMEM-provider.patch
 	#rm -f toolchain/musl/patches/100-tools-Rework-adding-of-CFI-annotations.patch
 	echo 'CONFIG_PACKAGE_apk-openssl=y' >> ".config"
-	if [ ! -d target/linux/`sed -nE 's/CONFIG_TARGET_([a-z0-9]*)=y/\1/p' ".config" | tr -d "\n"`/patches-6.17 ]; then
-		echo "Sorry but kernel 6.12 is not supported on your arch yet"
+	if [ ! -d target/linux/`sed -nE 's/CONFIG_TARGET_([a-z0-9]*)=y/\1/p' ".config" | tr -d "\n"`/patches-6.18 ]; then
+		echo "Sorry but kernel 6.18 is not supported on your arch yet"
 		NOT_SUPPORTED="1"
 	fi
 fi
@@ -1004,7 +1006,7 @@ rm -rf feeds/${OMR_KERNEL}/luci/modules/luci-mod-network
 
 if [ -d feeds/${OMR_KERNEL}/${OMR_DIST}/luci-mod-status ]; then
 	rm -rf feeds/${OMR_KERNEL}/luci/modules/luci-mod-status
-elif [ "$OMR_KERNEL" = "6.6" ] || [ "$OMR_KERNEL" = "6.10" ] || [ "$OMR_KERNEL" = "6.11" ] || [ "$OMR_KERNEL" = "6.12" ] || [ "$OMR_KERNEL" = "6.17" ]; then
+elif [ "$OMR_KERNEL" = "6.6" ] || [ "$OMR_KERNEL" = "6.10" ] || [ "$OMR_KERNEL" = "6.11" ] || [ "$OMR_KERNEL" = "6.12" ] || [ "$OMR_KERNEL" = "6.18" ]; then
 	cd feeds/${OMR_KERNEL}
 	#if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-syslog-6.6.patch; then
 	#	patch -N -p1 -s < ../../patches/luci-syslog-6.6.patch
