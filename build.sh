@@ -935,7 +935,7 @@ if [ "$OMR_KERNEL" = "6.18" ]; then
 	find target/linux/x86 -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.18%g' {} \;
 	echo "Done"
 	echo "Set to kernel 6.18 for mediatek"
-	find target/linux/mediatek -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.12%g' {} \;
+	find target/linux/mediatek -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.18%g' {} \;
 	echo "Done"
 	echo "Set to kernel 6.12 for bcm27xx"
 	find target/linux/bcm27xx -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.12%g' {} \;
@@ -974,8 +974,8 @@ if [ "$OMR_KERNEL" = "6.18" ]; then
 	echo "CONFIG_KERNEL_MODULE_ALLOW_BTF_MISMATCH=y" >> ".config"
 	echo 'CONFIG_EXTRA_OPTIMIZATION="-fno-caller-saves -fno-plt -Wno-stringop-truncation -Wno-stringop-overread -Wno-calloc-transposed-args"' >> ".config"
 	# Remove for now packages that doesn't compile
-	#rm -rf package/kernel/mt76
-	#rm -rf package/kernel/rtl8812au-ct
+	rm -rf package/kernel/mt76
+	rm -rf package/kernel/rtl8812au-ct
 	rm -rf package/kernel/r8101
 	# Remove not needed patches
 	#rm -f package/kernel/mac80211/patches/build/200-Revert-wifi-iwlwifi-Use-generic-thermal_zone_get_tri.patch
