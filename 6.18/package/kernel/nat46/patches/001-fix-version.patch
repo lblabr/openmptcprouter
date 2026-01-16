@@ -1,0 +1,11 @@
+--- a/nat46/modules/nat46-module.c	2025-12-17 18:12:03.095861536 +0100
++++ b/nat46/modules/nat46-module.c	2025-12-17 18:12:23.999334005 +0100
+@@ -51,7 +51,7 @@
+ #define NAT46_CONTROL_PROC_NAME "control"
+ 
+ #ifndef NAT46_VERSION
+-#define NAT46_VERSION __DATE__ " " __TIME__
++#define NAT46_VERSION "0.1"
+ #endif
+ 
+ MODULE_LICENSE("GPL");
