@@ -1,4 +1,4 @@
-cDTS_DIR := $(DTS_DIR)/mediatek
+DTS_DIR := $(DTS_DIR)/mediatek
 
 define Image/Prepare
 	# For UBI we want only one extra block
