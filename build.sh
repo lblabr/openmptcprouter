@@ -1097,6 +1097,11 @@ scripts/feeds update -a
 #echo "Done"
 #cd "$OMR_TARGET/${OMR_KERNEL}/source"
 
+if [ "$OMR_DIST" = "openwrt" ]; then
+	echo "install all openwrt feeds"
+	scripts/feeds install -a 
+fi
+
 if [ "$OMR_ALL_PACKAGES" = "yes" ]; then
 	scripts/feeds install -a -d m -p packages
 	scripts/feeds install -a -d m -p luci
