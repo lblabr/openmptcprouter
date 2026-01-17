@@ -227,13 +227,13 @@ cat >> "$OMR_TARGET/${OMR_KERNEL}/source/package/base-files/files/etc/banner" <<
 EOF
 
 if [ "OMR_DIS" != "openwrt" ]; then
-	cat > "$OMR_TARGET/${OMR_KERNEL}/source/feeds.conf" <<EOF
+	cat > "$OMR_TARGET/${OMR_KERNEL}/source/feeds.conf" <<-EOF
 	src-link packages $(readlink -f feeds/${OMR_KERNEL}/packages)
 	src-link luci $(readlink -f feeds/${OMR_KERNEL}/luci)
 	src-link openmptcprouter $(readlink -f "$OMR_FEED")	
 	EOF
 else
-	cat > "$OMR_TARGET/${OMR_KERNEL}/source/feeds.conf" <<EOF
+	cat > "$OMR_TARGET/${OMR_KERNEL}/source/feeds.conf" <<-EOF
 	src-link packages $(readlink -f feeds/${OMR_KERNEL}/packages)
 	src-link luci $(readlink -f feeds/${OMR_KERNEL}/luci)
 	src-link video $(readlink -f feeds/${OMR_KERNEL}/video)
