@@ -141,7 +141,7 @@ if [ "$ONLY_PREPARE" != "yes" ]; then
 	fi
 fi
 
-if [ -z "$OMR_FEED" ] && [ $OMR_DIST != "openwrt" ] ; then
+if [ -z "$OMR_FEED" ] && [ "$OMR_DIST" != "openwrt" ] ; then
 	OMR_FEED=feeds/openmptcprouter
 	[ "$ONLY_PREPARE" != "yes" ] && _get_repo "$OMR_FEED" "$OMR_FEED_URL" "$OMR_FEED_SRC"
 else 
