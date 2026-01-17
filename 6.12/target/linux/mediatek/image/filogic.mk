@@ -1,4 +1,4 @@
-DTS_DIR := $(DTS_DIR)/mediatek
+cDTS_DIR := $(DTS_DIR)/mediatek
 
 define Image/Prepare
 	# For UBI we want only one extra block
@@ -2142,7 +2142,7 @@ TARGET_DEVICES += zyxel_nwa50ax-pro
 
 define Device/z8102ax-emmc
   DEVICE_VENDOR := ZBT
-  DEVICE_MODEL := Z8102AX
+  DEVICE_MODEL := Z8102AX (eMMC)
   DEVICE_DTS := mt7981b-zbt-z8102ax-eMMC
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
