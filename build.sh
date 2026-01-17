@@ -13,6 +13,7 @@ umask 0022
 unset GREP_OPTIONS SED
 
 _get_repo() (
+	echo "_get_repo $1 $2"
 	mkdir -p "$1"
 	cd "$1"
 	[ -d .git ] || git init
@@ -78,7 +79,7 @@ elif [ "$OMR_TARGET" = "wrt3200acm" ] || [ "$OMR_TARGET" = "wrt32x" ]; then
 	OMR_REAL_TARGET="arm_cortex-a9_vfpv3-d16"
 elif [ "$OMR_TARGET" = "rpi2" ] || [ "$OMR_TARGET" = "bpi-r1" ] || [ "$OMR_TARGET" = "bpi-r2" ] || [ "$OMR_TARGET" = "rutx" ] || [ "$OMR_TARGET" = "rutx12" ] || [ "$OMR_TARGET" = "rutx50" ] || [ "$OMR_TARGET" = "p2w_r619ac" ]; then
 	OMR_REAL_TARGET="arm_cortex-a7_neon-vfpv4"
-elif [ "$OMR_TARGET" = "rpi3" ] || [ "$OMR_TARGET" = "bpi-r3" ] || [ "$OMR_TARGET" = "bpi-r3-mini" ] || [ "$OMR_TARGET" = "bpi-r4" ] || [ "$OMR_TARGET" = "bpi-r4-poe" ] || [ "$OMR_TARGET" = "bpi-r64" ] || [ "$OMR_TARGET" = "espressobin" ] || [ "$OMR_TARGET" = "z8102ax_128m" ] || [ "$OMR_TARGET" = "z8102ax_64m" ] || [ "$OMR_TARGET" = "z8109ax_128m" ] || [ "$OMR_TARGET" = "bpi-r4" ] || [ "$OMR_TARGET" = "bpi-r4-poe" ] || [ "$OMR_TARGET" = "bpi-r3" ] || [ "$OMR_TARGET" = "bpi-r3-mini" ] || [ "$OMR_TARGET" = "espressobin" ] || [ "$OMR_TARGET" = "gl-mt2500" ] || [ "$OMR_TARGET" = "gl-mt6000" ]; then
+elif [ "$OMR_TARGET" = "rpi3" ] || [ "$OMR_TARGET" = "bpi-r3" ] || [ "$OMR_TARGET" = "bpi-r3-mini" ] || [ "$OMR_TARGET" = "bpi-r4" ] || [ "$OMR_TARGET" = "bpi-r4-poe" ] || [ "$OMR_TARGET" = "bpi-r64" ] || [ "$OMR_TARGET" = "espressobin" ] || [ "$OMR_TARGET" = "z8102ax-emmc" ] || [ "$OMR_TARGET" = "z8102ax_128m" ] || [ "$OMR_TARGET" = "z8102ax_64m" ] || [ "$OMR_TARGET" = "z8109ax_128m" ] || [ "$OMR_TARGET" = "bpi-r4" ] || [ "$OMR_TARGET" = "bpi-r4-poe" ] || [ "$OMR_TARGET" = "bpi-r3" ] || [ "$OMR_TARGET" = "bpi-r3-mini" ] || [ "$OMR_TARGET" = "espressobin" ] || [ "$OMR_TARGET" = "gl-mt2500" ] || [ "$OMR_TARGET" = "gl-mt6000" ]; then
 	OMR_REAL_TARGET="aarch64_cortex-a53"
 elif [ "$OMR_TARGET" = "x86" ]; then
 	OMR_REAL_TARGET="i386_pentium4"
@@ -107,14 +108,18 @@ if [ "$ONLY_PREPARE" != "yes" ]; then
 		elif [ "$OMR_KERNEL" = "6.6" ] || [ "$OMR_KERNEL" = "6.10" ] || [ "$OMR_KERNEL" = "6.11" ]; then
 			# Use OpenWRT 24.10 for 6.6 kernel
 			_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/openwrt/openwrt "0b392b925fa16c40dccc487753a4412bd054cd63"
+#			_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/openwrt/openwrt "openwrt-24.10"
 			_get_repo feeds/${OMR_KERNEL}/packages ${OMR_OPENWRT_GIT}/openwrt/packages "234806df39e38734ce5a3dfe0d94f8811cb57440"
 			_get_repo feeds/${OMR_KERNEL}/luci ${OMR_OPENWRT_GIT}/openwrt/luci "be769afc62310631509826e41863ec7a71e764a4"
 			_get_repo feeds/${OMR_KERNEL}/routing ${OMR_OPENWRT_GIT}/openwrt/routing "f2ee837d3714f86e9d636302e9f69612c71029cb"
 		elif [ "$OMR_KERNEL" = "6.12" ] || [ "$OMR_KERNEL" = "6.18" ]; then
+			echo "openwrt feeds"
 			_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/openwrt/openwrt "5578eb69c2eb279fee6d9dc47a6d5d328bc33acd"
 			_get_repo feeds/${OMR_KERNEL}/packages ${OMR_OPENWRT_GIT}/openwrt/packages "6e8b8fef61fef9c02fc29c54a83b4c90d2c2ed28"
 			_get_repo feeds/${OMR_KERNEL}/luci ${OMR_OPENWRT_GIT}/openwrt/luci "c1c29d2ecd7f52d075488cf23f447206e39bb33d"
 			_get_repo feeds/${OMR_KERNEL}/routing ${OMR_OPENWRT_GIT}/openwrt/routing "c69a11d3099fe7454a917615be48519a55267a7d"
+			_get_repo feeds/${OMR_KERNEL}/video https://github.com/lblabr/openwrt.video "openwrt-25.12"
+			_get_repo feeds/${OMR_KERNEL}/telephony ${OMR_OPENWRT_GIT}/openwrt/telephony "openwrt-25.12"			
 		fi
 	elif [ "$OMR_OPENWRT" = "coolsnowwolfmix" ]; then
 		_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/coolsnowwolf/lede.git "master"
@@ -137,9 +142,11 @@ if [ "$ONLY_PREPARE" != "yes" ]; then
 	fi
 fi
 
-if [ -z "$OMR_FEED" ]; then
+if [ -z "$OMR_FEED" ] && [ "$OMR_DIST" != "openwrt" ] ; then
 	OMR_FEED=feeds/openmptcprouter
 	[ "$ONLY_PREPARE" != "yes" ] && _get_repo "$OMR_FEED" "$OMR_FEED_URL" "$OMR_FEED_SRC"
+else 
+	echo "openwrt feeds"
 fi
 
 if [ -n "$CUSTOM_FEED_URL" ] && [ -z "$CUSTOM_FEED" ]; then
@@ -220,11 +227,21 @@ cat >> "$OMR_TARGET/${OMR_KERNEL}/source/package/base-files/files/etc/banner" <<
 -----------------------------------------------------
 EOF
 
-cat > "$OMR_TARGET/${OMR_KERNEL}/source/feeds.conf" <<EOF
-src-link packages $(readlink -f feeds/${OMR_KERNEL}/packages)
-src-link luci $(readlink -f feeds/${OMR_KERNEL}/luci)
-src-link openmptcprouter $(readlink -f "$OMR_FEED")
-EOF
+if [ "$OMR_DIST" != "openwrt" ]; then
+	cat > "$OMR_TARGET/${OMR_KERNEL}/source/feeds.conf" <<-EOF
+	src-link packages $(readlink -f feeds/${OMR_KERNEL}/packages)
+	src-link luci $(readlink -f feeds/${OMR_KERNEL}/luci)
+	src-link openmptcprouter $(readlink -f "$OMR_FEED")	
+	EOF
+else
+	cat > "$OMR_TARGET/${OMR_KERNEL}/source/feeds.conf" <<-EOF
+	src-link packages $(readlink -f feeds/${OMR_KERNEL}/packages)
+	src-link luci $(readlink -f feeds/${OMR_KERNEL}/luci)
+	src-link video $(readlink -f feeds/${OMR_KERNEL}/video)
+	src-link routing $(readlink -f feeds/${OMR_KERNEL}/routing)
+	src-link telephony $(readlink -f feeds/${OMR_KERNEL}/telephony)
+	EOF
+fi
 
 if [ -n "$CUSTOM_FEED" ]; then
 	echo "src-link ${OMR_DIST} $(readlink -f ${CUSTOM_FEED})" >> "$OMR_TARGET/${OMR_KERNEL}/source/feeds.conf"
