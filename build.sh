@@ -13,6 +13,7 @@ umask 0022
 unset GREP_OPTIONS SED
 
 _get_repo() (
+	echo "_get_repo $1 $2"
 	mkdir -p "$1"
 	cd "$1"
 	[ -d .git ] || git init
