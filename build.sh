@@ -78,7 +78,7 @@ elif [ "$OMR_TARGET" = "wrt3200acm" ] || [ "$OMR_TARGET" = "wrt32x" ]; then
 	OMR_REAL_TARGET="arm_cortex-a9_vfpv3-d16"
 elif [ "$OMR_TARGET" = "rpi2" ] || [ "$OMR_TARGET" = "bpi-r1" ] || [ "$OMR_TARGET" = "bpi-r2" ] || [ "$OMR_TARGET" = "rutx" ] || [ "$OMR_TARGET" = "rutx12" ] || [ "$OMR_TARGET" = "rutx50" ] || [ "$OMR_TARGET" = "p2w_r619ac" ]; then
 	OMR_REAL_TARGET="arm_cortex-a7_neon-vfpv4"
-elif [ "$OMR_TARGET" = "rpi3" ] || [ "$OMR_TARGET" = "bpi-r3" ] || [ "$OMR_TARGET" = "bpi-r3-mini" ] || [ "$OMR_TARGET" = "bpi-r4" ] || [ "$OMR_TARGET" = "bpi-r4-poe" ] || [ "$OMR_TARGET" = "bpi-r64" ] || [ "$OMR_TARGET" = "espressobin" ] || [ "$OMR_TARGET" = "z8102ax_128m" ] || [ "$OMR_TARGET" = "z8102ax_64m" ] || [ "$OMR_TARGET" = "z8109ax_128m" ] || [ "$OMR_TARGET" = "bpi-r4" ] || [ "$OMR_TARGET" = "bpi-r4-poe" ] || [ "$OMR_TARGET" = "bpi-r3" ] || [ "$OMR_TARGET" = "bpi-r3-mini" ] || [ "$OMR_TARGET" = "espressobin" ] || [ "$OMR_TARGET" = "gl-mt2500" ] || [ "$OMR_TARGET" = "gl-mt6000" ]; then
+elif [ "$OMR_TARGET" = "rpi3" ] || [ "$OMR_TARGET" = "bpi-r3" ] || [ "$OMR_TARGET" = "bpi-r3-mini" ] || [ "$OMR_TARGET" = "bpi-r4" ] || [ "$OMR_TARGET" = "bpi-r4-poe" ] || [ "$OMR_TARGET" = "bpi-r64" ] || [ "$OMR_TARGET" = "espressobin" ] || [ "$OMR_TARGET" = "z8102ax_emmc" ] || [ "$OMR_TARGET" = "z8102ax_128m" ] || [ "$OMR_TARGET" = "z8102ax_64m" ] || [ "$OMR_TARGET" = "z8109ax_128m" ] || [ "$OMR_TARGET" = "bpi-r4" ] || [ "$OMR_TARGET" = "bpi-r4-poe" ] || [ "$OMR_TARGET" = "bpi-r3" ] || [ "$OMR_TARGET" = "bpi-r3-mini" ] || [ "$OMR_TARGET" = "espressobin" ] || [ "$OMR_TARGET" = "gl-mt2500" ] || [ "$OMR_TARGET" = "gl-mt6000" ]; then
 	OMR_REAL_TARGET="aarch64_cortex-a53"
 elif [ "$OMR_TARGET" = "x86" ]; then
 	OMR_REAL_TARGET="i386_pentium4"
@@ -138,9 +138,11 @@ if [ "$ONLY_PREPARE" != "yes" ]; then
 	fi
 fi
 
-if [ -z "$OMR_FEED" ]; then
+if [ -z "$OMR_FEED" ] && [ $OMR_DIST != "openwrt" ] ; then
 	OMR_FEED=feeds/openmptcprouter
 	[ "$ONLY_PREPARE" != "yes" ] && _get_repo "$OMR_FEED" "$OMR_FEED_URL" "$OMR_FEED_SRC"
+else 
+	echo "openwrt feeds"
 fi
 
 if [ -n "$CUSTOM_FEED_URL" ] && [ -z "$CUSTOM_FEED" ]; then
