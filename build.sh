@@ -116,7 +116,9 @@ if [ "$ONLY_PREPARE" != "yes" ]; then
 			echo "openwrt feeds"
 			_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/openwrt/openwrt "5578eb69c2eb279fee6d9dc47a6d5d328bc33acd"
 			#_get_repo "$OMR_TARGET/${OMR_KERNEL}/source" ${OMR_OPENWRT_GIT}/openwrt/openwrt "openwrt-25.12"
-			_get_repo feeds/${OMR_KERNEL}/packages ${OMR_OPENWRT_GIT}/openwrt/packages "openwrt-25.12"
+			_get_repo feeds/${OMR_KERNEL}/packages ${OMR_OPENWRT_GIT}/openwrt/packages "6e8b8fef61fef9c02fc29c54a83b4c90d2c2ed28"
+#			_get_repo feeds/${OMR_KERNEL}/packages ${OMR_OPENWRT_GIT}/openwrt/packages "openwrt-25.12"
+
 			_get_repo feeds/${OMR_KERNEL}/luci ${OMR_OPENWRT_GIT}/openwrt/luci "openwrt-25.12"
 			_get_repo feeds/${OMR_KERNEL}/routing ${OMR_OPENWRT_GIT}/openwrt/routing "openwrt-25.12"
 			_get_repo feeds/${OMR_KERNEL}/video https://github.com/lblabr/openwrt.video "openwrt-25.12"
