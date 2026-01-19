@@ -1020,11 +1020,12 @@ if [ "$OMR_KERNEL" = "6.18" ]; then
 	fi
 fi
 
+cd "../../.."
 if [ "$OMR_DIST" = "openwrt" ]; then
 	echo "do not modify sources"
 else
 	#rm -rf feeds/packages/libs/libwebp
-	cd "../../.."
+
 	rm -rf feeds/${OMR_KERNEL}/luci/modules/luci-mod-network
 	
 	if [ -d feeds/${OMR_KERNEL}/${OMR_DIST}/luci-mod-status ]; then
