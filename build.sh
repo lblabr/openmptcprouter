@@ -1020,51 +1020,58 @@ if [ "$OMR_KERNEL" = "6.18" ]; then
 	fi
 fi
 
-#rm -rf feeds/packages/libs/libwebp
-cd "../../.."
-rm -rf feeds/${OMR_KERNEL}/luci/modules/luci-mod-network
-
-if [ -d feeds/${OMR_KERNEL}/${OMR_DIST}/luci-mod-status ]; then
-	rm -rf feeds/${OMR_KERNEL}/luci/modules/luci-mod-status
-elif [ "$OMR_KERNEL" = "6.6" ] || [ "$OMR_KERNEL" = "6.10" ] || [ "$OMR_KERNEL" = "6.11" ] || [ "$OMR_KERNEL" = "6.12" ] || [ "$OMR_KERNEL" = "6.18" ]; then
-	cd feeds/${OMR_KERNEL}
-	#if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-syslog-6.6.patch; then
-	#	patch -N -p1 -s < ../../patches/luci-syslog-6.6.patch
-	#fi
-	if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-syslog-6.10.patch; then
-		patch -N -p1 -s < ../../patches/luci-syslog-6.10.patch
-	fi
-	cd -
+if [ "$OMR_DIST" = "openwrt" ]; then
+	echo "do not modify sources"
 else
-	cd feeds/${OMR_KERNEL}
-	if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-syslog.patch; then
-		patch -N -p1 -s < ../../patches/luci-syslog.patch
+	#rm -rf feeds/packages/libs/libwebp
+	cd "../../.."
+	rm -rf feeds/${OMR_KERNEL}/luci/modules/luci-mod-network
+	
+	if [ -d feeds/${OMR_KERNEL}/${OMR_DIST}/luci-mod-status ]; then
+		rm -rf feeds/${OMR_KERNEL}/luci/modules/luci-mod-status
+	elif [ "$OMR_KERNEL" = "6.6" ] || [ "$OMR_KERNEL" = "6.10" ] || [ "$OMR_KERNEL" = "6.11" ] || [ "$OMR_KERNEL" = "6.12" ] || [ "$OMR_KERNEL" = "6.18" ]; then
+		cd feeds/${OMR_KERNEL}
+		#if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-syslog-6.6.patch; then
+		#	patch -N -p1 -s < ../../patches/luci-syslog-6.6.patch
+		#fi
+		if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-syslog-6.10.patch; then
+			patch -N -p1 -s < ../../patches/luci-syslog-6.10.patch
+		fi
+		cd -
+	else
+		cd feeds/${OMR_KERNEL}
+		if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-syslog.patch; then
+			patch -N -p1 -s < ../../patches/luci-syslog.patch
+		fi
+		cd -
 	fi
-	cd -
+
+	#cd feeds/${OMR_KERNEL}
+	#if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-unbound-logread.patch; then
+	#	patch -N -p1 -s < ../../patches/luci-unbound-logread.patch
+	#fi
+	#cd -
+	
+	
+	[ -d feeds/${OMR_KERNEL}/${OMR_DIST}/luci-app-statistics ] && rm -rf feeds/${OMR_KERNEL}/luci/applications/luci-app-statistics
+	[ -d feeds/${OMR_KERNEL}/${OMR_DIST}/luci-proto-modemmanager ] && rm -rf feeds/${OMR_KERNEL}/luci/protocols/luci-proto-modemmanager
+	#if [ -d ${OMR_FEED}/netifd ] && [ "${OMR_KERNEL}" != "5.4" ]; then
+	#	rm -rf ${OMR_TARGET}/${OMR_KERNEL}/source/package/network/config/netifd
+	#fi
+	[ -d ${OMR_FEED}/libgpiod ] && rm -rf feeds/${OMR_KERNEL}/packages/libs/libgpiod
+	[ -d ${OMR_FEED}/iperf3 ] && rm -rf feeds/${OMR_KERNEL}/packages/net/iperf3
+	[ -d ${OMR_FEED}/golang ] && {
+		rm -rf feeds/${OMR_KERNEL}/packages/lang/golang
+		cp -r ${OMR_FEED}/golang feeds/${OMR_KERNEL}/packages/lang/
+	}
+	[ -d ${OMR_FEED}/openvpn ] && rm -rf feeds/${OMR_KERNEL}/packages/net/openvpn
+	[ -d ${OMR_FEED}/iproute2 ] && rm -rf feeds/${OMR_KERNEL}/packages/network/utils/iproute2
+	[ -d ${CUSTOM_FEED}/syslog-ng ] && rm -rf feeds/${OMR_KERNEL}/packages/admin/syslog-ng
+	([ "$OMR_KERNEL" = "6.6" ] || [ "$OMR_KERNEL" = "6.10" ]) && [ -d ${OMR_FEED}/xtables-addons ] && rm -rf feeds/${OMR_KERNEL}/packages/net/xtables-addons
+
 fi
 
-#cd feeds/${OMR_KERNEL}
-#if ! patch -Rf -N -p1 -s --dry-run < ../../patches/luci-unbound-logread.patch; then
-#	patch -N -p1 -s < ../../patches/luci-unbound-logread.patch
-#fi
-#cd -
 
-
-[ -d feeds/${OMR_KERNEL}/${OMR_DIST}/luci-app-statistics ] && rm -rf feeds/${OMR_KERNEL}/luci/applications/luci-app-statistics
-[ -d feeds/${OMR_KERNEL}/${OMR_DIST}/luci-proto-modemmanager ] && rm -rf feeds/${OMR_KERNEL}/luci/protocols/luci-proto-modemmanager
-#if [ -d ${OMR_FEED}/netifd ] && [ "${OMR_KERNEL}" != "5.4" ]; then
-#	rm -rf ${OMR_TARGET}/${OMR_KERNEL}/source/package/network/config/netifd
-#fi
-[ -d ${OMR_FEED}/libgpiod ] && rm -rf feeds/${OMR_KERNEL}/packages/libs/libgpiod
-[ -d ${OMR_FEED}/iperf3 ] && rm -rf feeds/${OMR_KERNEL}/packages/net/iperf3
-[ -d ${OMR_FEED}/golang ] && {
-	rm -rf feeds/${OMR_KERNEL}/packages/lang/golang
-	cp -r ${OMR_FEED}/golang feeds/${OMR_KERNEL}/packages/lang/
-}
-[ -d ${OMR_FEED}/openvpn ] && rm -rf feeds/${OMR_KERNEL}/packages/net/openvpn
-[ -d ${OMR_FEED}/iproute2 ] && rm -rf feeds/${OMR_KERNEL}/packages/network/utils/iproute2
-[ -d ${CUSTOM_FEED}/syslog-ng ] && rm -rf feeds/${OMR_KERNEL}/packages/admin/syslog-ng
-([ "$OMR_KERNEL" = "6.6" ] || [ "$OMR_KERNEL" = "6.10" ]) && [ -d ${OMR_FEED}/xtables-addons ] && rm -rf feeds/${OMR_KERNEL}/packages/net/xtables-addons
 
 echo "Add Occitan translation support"
 cd feeds/${OMR_KERNEL}
