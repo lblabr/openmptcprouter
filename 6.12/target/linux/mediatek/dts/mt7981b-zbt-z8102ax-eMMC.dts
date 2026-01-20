@@ -324,20 +324,24 @@
 	status = "okay";
 };
 
+
 &wifi {
-	status = "okay";
-	mediatek,mtd-eeprom = <&factory 0x0>;
-};
-
-&factory {
-	compatible = "nvmem-cells";
 	#address-cells = <1>;
-	#size-cells = <1>;
+	#size-cells = <0>;
+	nvmem-cells = <&eeprom_factory_0>;
+	nvmem-cell-names = "eeprom";
+	status = "okay";
 
-	macaddr_factory_004: macaddr@004 {
-		reg = <0x004 0x6>;
+	band@0 {
+		reg = <0>;
+		nvmem-cells = <&macaddr_factory_4 0>;
+		nvmem-cell-names = "mac-address";
 	};
-	macaddr_factory_02a: macaddr@02a {
-		reg = <0x02a 0x6>;
+
+	band@1 {
+		reg = <1>;
+		nvmem-cells = <&macaddr_factory_4 7>;
+		nvmem-cell-names = "mac-address";
 	};
 };
+
