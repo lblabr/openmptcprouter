@@ -1146,6 +1146,11 @@ if [ ! -f "../../../$OMR_TARGET_CONFIG" ] || [ "$NOT_SUPPORTED" = "1" ]; then
 	echo "Target $OMR_TARGET not found ! You have to configure and compile your kernel manually."
 	exit 1
 fi
+
+if [ "$ONLY_PREPARE" = "yes" ]; then
+	make defconfig
+fi
+
 [ "$ONLY_PREPARE" = "yes" ] && exit 0
 echo "Building $OMR_DIST for the target $OMR_TARGET with kernel ${OMR_KERNEL}"
 make defconfig
