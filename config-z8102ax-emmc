@@ -40,4 +40,19 @@ CONFIG_PACKAGE_wpad-mesh-openssl=m
 
 CONFIG_PACKAGE_wwan=y
 
+# nginx
+#CONFIG_PACKAGE_nginx-full is not set
+CONFIG_PACKAGE_luci-nginx=y
+CONFIG_PACKAGE_nginx-mod-rtmp=m
+CONFIG_PACKAGE_nginx-ssl=m
+# end nginx
+
+
+# ffmpeg
+CONFIG_PACKAGE_ffmpeg=m
+CONFIG_PACKAGE_ffprobe=m
+CONFIG_PACKAGE_libffmpeg-full
+# ffmpeg
+
+
 
