@@ -937,19 +937,19 @@ if [ "$OMR_KERNEL" = "6.18" ]; then
 	echo "Set to kernel 6.18 for mediatek"
 	find target/linux/mediatek -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.18%g' {} \;
 	echo "Done"
-	echo "Set to kernel 6.12 for bcm27xx"
-	find target/linux/bcm27xx -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.12%g' {} \;
+	echo "Set to kernel 6.18 for bcm27xx"
+	find target/linux/bcm27xx -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.18%g' {} \;
 	echo "Done"
-	echo "Set to kernel 6.12 for qualcommax"
-	find target/linux/qualcommax -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.12%g' {} \;
+	echo "Set to kernel 6.18 for qualcommax"
+	find target/linux/qualcommax -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.18%g' {} \;
 	echo "Done"
-	echo "Set to kernel 6.12 for ipq40xx"
-	find target/linux/ipq40xx -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.12%g' {} \;
+	echo "Set to kernel 6.18 for ipq40xx"
+	find target/linux/ipq40xx -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.18%g' {} \;
 	echo "Done"
-	echo "Set to kernel 6.12 for ipq806x"
-	find target/linux/ipq806x -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.6%KERNEL_PATCHVER:=6.12%g' {} \;
+	echo "Set to kernel 6.18 for ipq806x"
+	find target/linux/ipq806x -type f -name Makefile -exec sed -i 's%KERNEL_PATCHVER:=6.12%KERNEL_PATCHVER:=6.18%g' {} \;
 	echo "Done"
-	echo "CONFIG_VERSION_CODE=6.12" >> ".config"
+	echo "CONFIG_VERSION_CODE=6.18" >> ".config"
 	echo "# CONFIG_PACKAGE_kmod-gpio-button-hotplug is not set" >> ".config"
 	echo "# CONFIG_PACKAGE_kmod-meraki-mx100 is not set" >> ".config"
 	echo "# CONFIG_PACKAGE_kmod-gpio-nct5104d is not set" >> ".config"
